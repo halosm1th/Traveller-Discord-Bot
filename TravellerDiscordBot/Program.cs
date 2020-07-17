@@ -27,7 +27,9 @@ namespace TravellerDiscordBot
             _client = new DiscordSocketClient();
             _client.Log += Log;
 
-            var token = File.ReadAllLines("M:\\Code\\token.txt")[0];
+            var dir = Directory.GetCurrentDirectory() + "/token.txt";
+            Console.WriteLine(dir);
+            var token = File.ReadAllLines(dir)[0];
             await _client.LoginAsync(TokenType.Bot,token);
                 //todo put this in enviroment variable
                 await _client.StartAsync();
@@ -81,7 +83,7 @@ namespace TravellerDiscordBot
 
         private async Task<(StringBuilder, List<int>)> RollResult(string data)
         {
-            var numberOfDiceToRoll = 1;
+            var numberOfDiceToRoll = 2;
             var numberOfSidesOnDice = 6;
             var numberOfTimesToRollDice = 1;
             var modifiers = 0;
@@ -112,7 +114,7 @@ namespace TravellerDiscordBot
                 }
                 else if (current == specialCharacters[RollParts.SidesOnDice])
                 {
-                    if(workingResult != "") numberOfSidesOnDice = GetValidNumber(ref workingResult);
+                    if (workingResult != "") numberOfSidesOnDice = GetValidNumber(ref workingResult);
                 }
                 else if (current == specialCharacters[RollParts.ModifiesUp])
                 {
@@ -135,6 +137,8 @@ namespace TravellerDiscordBot
                     workingResult += current;
                 }
             }
+
+            if (workingResult != "") numberOfSidesOnDice = GetValidNumber(ref workingResult);
 
             var outputResult = await GetDiceOutput(numberOfTimesToRollDice, numberOfDiceToRoll, numberOfSidesOnDice, modifiers);
             await Log($"from: {data} to: {outputResult.Item1}");
