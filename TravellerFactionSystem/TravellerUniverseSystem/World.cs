@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.Text;
+using TravellerFactionSystem;
+using TravellerFactionSystem.Factions;
 
 namespace Traveller_subsector_generator
 {
@@ -25,6 +27,10 @@ namespace Traveller_subsector_generator
         public bool GasGiant;
         public bool OtherBase;
 
+        public List<BaseOfOperations> BasesOfOperations { get; }
+        public List<Asset> AssetsOnPlanet { get; }
+        //AssetFaction
+        public Faction Faction { get; }
 
         public string UWP
         {
@@ -108,6 +114,15 @@ namespace Traveller_subsector_generator
             HasWorld = true;
         }
 
+        public void SellAsset(Asset asset)
+        {
+            if (asset.WorldOn == this)
+            {
+                asset.Sell();
+
+            }
+        }
+
         public string StarportDescrption()
             => StarportQuality switch
             {
@@ -158,7 +173,6 @@ namespace Traveller_subsector_generator
                 _ => "Error"
             };
 
-
         public string WorldHydrographicsDescription()
             => WorldHydrographics switch
             {
@@ -173,6 +187,7 @@ namespace Traveller_subsector_generator
                 8 => "76-85%. | Water World",
                 9 => "86-95%. | Only a few small Islands and archipelagos.",
                 10 => "96-100%. | Almost Entirely Water",
+                _ => "0-5%. | Desert World"
             };
 
         public string PopulationDescription()
