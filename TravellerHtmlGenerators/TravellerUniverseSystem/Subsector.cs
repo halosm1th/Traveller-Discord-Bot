@@ -6,14 +6,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using TravellerSubsectorMap;
 
 namespace Traveller_subsector_generator
 {
     class Subsector
     {
         public World[,] Systems;
-
-        public long Population => (long) Systems.Cast<World>().Where(system => system.HasWorld).Sum(world => world.Popuation);
         public long WorldCount => (long) Systems.Cast<World>().Count( system => system.HasWorld);
 
         public string Name;
@@ -65,76 +64,53 @@ namespace Traveller_subsector_generator
         }
 
 
-        private string GetMiddleText()
-        {
-            var sb = new StringBuilder();
-            foreach (var system in Worlds())
-            {
-                var path = $"{system.Name}/{system.Name}".Replace(" ", "_");
-                sb.Append($@"<li><a href=""{path}.html"">{system.Name}</a></li>");
-
-            }
-
-            return sb.ToString();
-        }
-
         public string GetHTML()
         {
-            var top = $@"<!DOCTYPE html>
+            return $@"<!DOCTYPE html>
 <html>
 <head>
     <title>{Name}</title>
-    <link rel=""stylesheet"" href=""style.css"">
+    <link rel=""stylesheet"" href=""{Galaxy.StyleLocation}"">
     <!-- This is a comment, by the way -->
 </head>
 <body>
 <h1>{Name}</h1>
-<p>the {Name} Subsector is in the <a href=""../{_sector.Name.Replace(" ","_")}.html"">{_sector.Name}</a> sector and contains the following {Systems.GetLength(0) * Systems.GetLength(1)} systems: 
-    <ol>";
-            var middle = GetMiddleText();
-            var bottom = $@"
-
-    </ol> 
+<p>the {Name} Subsector is in the <a href=""../{_sector.Name.Replace(" ","_")}.html"">{_sector.Name} sector</a> and contains the following {Systems.GetLength(0) * Systems.GetLength(1)} systems: 
 </p>
 <h2>Stats</h2>
 Some stats about the {Name} Subsector:
 <ul>
     <li>
-        Population: {Population}
-    </li>
-    <li>
         Number of Planets: {WorldCount}
     </li>
 </ul>
+<h1>Planets</h1>
+<div class=""flex-container"">
+{GetPlanets()}
+</div>
 </body>
 </html>";
+        }
 
+        private string GetPlanets()
+        {
             var sb = new StringBuilder();
-            sb.Append(top);
-            sb.Append(middle);
-            sb.Append(bottom);
+            foreach (var system in Worlds())
+            {
+                sb.Append(system.GetHTML());
+            }
 
             return sb.ToString();
         }
 
         public void WriteWholeSubSectorHTML(string path)
         {
-            Console.WriteLine();
             File.WriteAllText(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
-            int current = 0;
-            int total = Worlds().Count;
-            foreach (var system in Worlds())
-            {
-                current++;
-                var megaPath = $"{path}/{system.Name}".Replace(" ", "_");
-                Directory.CreateDirectory(megaPath);
-                system.WriteSystemHTML(megaPath);
+        }
 
-                var percent = Math.Round((double)current / (double)total * 100, 0);
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write($"\r[{Name}] SubSector: {percent}% ({current}/{total})");
-            }
-            Console.WriteLine();
+        public async Task WriteWholeSubSectorHTMLAsync(string path)
+        {
+            await File.WriteAllTextAsync(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
         }
 
         public void GenerateSubsector(int worldOdds = 50)

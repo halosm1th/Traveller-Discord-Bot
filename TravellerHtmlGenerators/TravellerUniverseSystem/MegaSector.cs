@@ -12,18 +12,6 @@ namespace Traveller_subsector_generator
     {
         public string Name;
 
-        public long Population
-        {
-            get
-            {
-                if (_pop <= 0)
-                {
-                    _pop = supersectors.Cast<SuperSector>().Sum(quadrant => quadrant.Population);
-                }
-
-                return _pop;
-            }
-        }
 
         public long WorldCount
         {
@@ -38,7 +26,6 @@ namespace Traveller_subsector_generator
             }
         }
 
-        private long _pop = 0;
         private long _worldCount = 0;
         private Quadrant _quadrant;
 
@@ -77,12 +64,12 @@ namespace Traveller_subsector_generator
 <html>
     <head>
         <title>{Name}</title>
-        <link rel=""stylesheet"" href=""style.css"">
+        <link rel=""stylesheet"" href=""{Galaxy.StyleLocation}"">
     <!-- This is a comment, by the way -->
     </head>
     <body>
     <h1>{Name}</h1>
-    <p>the {Name} megasector contains the following {supersectors.GetLength(0) * supersectors.GetLength(1)} SuperSectors: 
+    <p>the {Name} megasector is inside the <a href=""../{_quadrant.Name.Replace(" ", "_")}.html"">{_quadrant.Name} Quadrant</a> and contains the following {supersectors.GetLength(0) * supersectors.GetLength(1)} SuperSectors: 
     <ol>";
             var midHtml = GenerateMidHTML();
             var bottomHTML = $@"    
@@ -91,9 +78,6 @@ namespace Traveller_subsector_generator
     <h2>Stats</h2>
     <p>Some stats about the {Name} MegaSector: <p>
     <ul>
-        <li>
-            Population: {Population}
-        </li>
         <li>
             Number of Planets: {WorldCount}
         </li>
@@ -121,9 +105,31 @@ namespace Traveller_subsector_generator
                 current++;
                 var percent = Math.Round((double)current / (double)total * 100, 0);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.Write($"\r[{Name}] megaSector: {percent}% ({current}/{total})");
+                Console.WriteLine($"\r[{Name}] megaSector: {percent}% ({current}/{total})");
             }
             Console.WriteLine();
+        }
+
+        public async Task WriteWholeMegasectorHTMLAsync(string path)
+        {
+
+            WriteWholeMegasectorHTML(path);
+            /*1
+                        Console.WriteLine();
+                        int current = 0;
+                        int total = supersectors.GetLength(0) * supersectors.GetLength(1);
+                        await File.WriteAllTextAsync(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
+                        foreach (var super in supersectors)
+                        {
+                            var megaPath = $"{path}/{super.Name}".Replace(" ", "_");
+                            Directory.CreateDirectory(megaPath);
+                            await super.WriteWholeSupersectorHTMLAsync(megaPath);
+
+                            current++;
+                            var percent = Math.Round((double)current / (double)total * 100, 0);
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                            Console.WriteLine($"\r[{Name}] megaSector: {percent}% ({current}/{total})");
+                        }*/
         }
 
         public void GenerateMegaSector()
@@ -145,7 +151,6 @@ namespace Traveller_subsector_generator
                 }
             }
 
-            Console.WriteLine();
         }
     }
 }

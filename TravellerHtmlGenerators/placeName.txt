@@ -10236,7 +10236,7 @@ Comoros
 Congo, Republic of the
 Congo, Democratic Republic of the
 Costa Rica
-Cote d'Ivoire
+Cote dIvoire
 Croatia
 Cuba
 Cyprus
@@ -10245,7 +10245,7 @@ Denmark
 Djibouti
 Dominica
 Dominican Republic
-East Timor (Timor-Leste)
+East Timor Timor-Leste
 Ecuador
 Egypt
 El Salvador
@@ -10316,7 +10316,7 @@ Mongolia
 Montenegro
 Morocco
 Mozambique
-Myanmar (Burma)
+Myanmar Burma
 Namibia
 Nauru
 Nepal
@@ -10385,7 +10385,7 @@ United States of America
 Uruguay
 Uzbekistan
 Vanuatu
-Vatican City (Holy See)
+Vatican City Holy See
 Venezuela
 Vietnam
 Yemen
@@ -10455,22 +10455,22 @@ Edward the Elder
 Athelstan
 Edmund the Magnificent
 Eadred
-Eadwig (Edwy) All-Fair
+Eadwig Edwy All-Fair
 Edgar the Peaceable
 Edward the Martyr
-AEthelred II (Ethelred the Unready)
-Edmund II (Ironside)
+AEthelred II Ethelred the Unready
+Edmund II Ironside
 Svein Forkbeard
-Cnut (Canute)
+Cnut Canute
 Harold I
 Hardicnut
-Edward (the Confessor)
+Edward the Confessor
 Harold II
 William I
 William II
 Henry I
 Stephen
-Empress Matilda (Queen Maud)
+Empress Matilda Queen Maud
 Henry II
 Richard I
 John
@@ -11046,7 +11046,7 @@ Comoros
 Congo, Republic of the
 Congo, Democratic Republic of the
 Costa Rica
-Cote d'Ivoire
+Cote dIvoire
 Croatia
 Cuba
 Cyprus
@@ -11055,7 +11055,7 @@ Denmark
 Djibouti
 Dominica
 Dominican Republic
-East Timor (Timor-Leste)
+East Timor Timor-Leste
 Ecuador
 Egypt
 El Salvador
@@ -11126,7 +11126,7 @@ Mongolia
 Montenegro
 Morocco
 Mozambique
-Myanmar (Burma)
+Myanmar Burma
 Namibia
 Nauru
 Nepal
@@ -11195,7 +11195,7 @@ United States of America
 Uruguay
 Uzbekistan
 Vanuatu
-Vatican City (Holy See)
+Vatican City Holy See
 Venezuela
 Vietnam
 Yemen
@@ -11274,8 +11274,8 @@ Douglas
 Dublin
 Dushanbe
 Edinburgh of the Seven Seas
-“El Aioun (declared)
-Tifariti (de facto)”
+El Aioun declared
+Tifariti de facto
 Episkopi Cantonment
 Flying Fish Cove
 Freetown
@@ -11301,7 +11301,7 @@ Islamabad
 Jakarta
 Jamestown
 Azaz
-Jerusalem (disputed)
+Jerusalem disputed
 Juba
 Kabul
 Kampala
@@ -11314,8 +11314,8 @@ Kingston
 Kingston
 Kingstown
 Kinshasa
-“Kuala Lumpur (official, legislative and royal)
-Putrajaya (administrative and judicial)”
+Kuala Lumpur official, legislative and royal
+Putrajaya administrative and judicial
 Kuwait City
 Libreville
 Lilongwe
@@ -11338,8 +11338,8 @@ Maputo
 Marigot
 Maseru
 Mata-Utu
-“Mbabane (administrative)
-Lobamba (royal and legislative)”
+Mbabane administrative
+Lobamba royal and legislative
 Mexico City
 Minsk
 Mogadishu
@@ -11375,22 +11375,22 @@ Paramaribo
 Paris
 Philipsburg
 Phnom Penh
-“Plymouth (official)
-Brades Estate (de facto)”
-“Podgorica (official)
-Cetinje (Old Royal Capital, present seat of the President)”
+Plymouth official
+Brades Estate de facto
+Podgorica official
+Cetinje
 Port Louis
 Port Moresby
 Port Vila
 Port-au-Prince
 Port of Spain
-“Porto-Novo (official)
-Cotonou (de facto)”
+Porto-Novo official
+Cotonou de facto
 Prague
 Praia
-“Pretoria (executive)
-Bloemfontein (judicial)
-Cape Town (legislative)”
+Pretoria executive
+Bloemfontein judicial
+Cape Town legislative
 Pristina
 Pyongyang
 Quito
@@ -11407,10 +11407,10 @@ San José
 San Juan
 San Marino
 San Salvador
-“Sana’a (de jure)
-Aden (de facto, temporary)”
-“Santiago (official)
-Valparaíso (legislative)”
+Sana’a de jure
+Aden de facto, temporary
+Santiago official
+Valparaíso legislative
 Santo Domingo
 São Tomé
 Sarajevo
@@ -11418,8 +11418,8 @@ Seoul
 Singapore
 Skopje
 Sofia
-“Sri Jayawardenepura Kotte (official)
-Colombo (executive, judicial)”
+Sri Jayawardenepura Kotte official
+Colombo executive, judicial
 St. George’s
 St. Helier
 St. John’s
@@ -11428,8 +11428,8 @@ St. Pierre
 Stanley
 Stepanakert
 Stockholm
-“Sucre (constitutional)
-La Paz (administrative)”
+Sucre constitutional
+La Paz administrative
 Sukhumi
 Suva
 Taipei
@@ -12242,8 +12242,8 @@ Bagtown
 Baidland
 Bailey
 Bailey Lakes
-Bailey's Crossroads
-Bailey's Prairie
+Baileys Crossroads
+Baileys Prairie
 Baileys Harbor
 Baileyton
 Baileyville
@@ -12362,7 +12362,7 @@ Barnet
 Barnett
 Barneveld
 Barney
-Barney's Junction
+Barneys Junction
 Barnhart
 Barnhill
 Barnsdall
@@ -12466,7 +12466,7 @@ Bayou Blue
 Bayou Cane
 Bayou Gauche
 Bayou Goula
-Bayou L'Ourse
+Bayou LOurse
 Bayou La Batre
 Bayou Vista
 Bayport
@@ -13184,7 +13184,7 @@ Boston Heights
 Bostonia
 Bostwick
 Boswell
-Boswell's Corner
+Boswells Corner
 Bosworth
 Bothell
 Bothell East
@@ -13774,7 +13774,7 @@ Cahokia
 Cainsville
 Cairnbrook
 Cairo
-Cajah's Mountain
+Cajahs Mountain
 Cal-Nev-Ari
 Calabasas
 Calabash
@@ -14001,7 +14001,7 @@ Carey
 Caribou
 Carl
 Carl Junction
-Carl's Corner
+Carls Corner
 Carle Place
 Carleton
 Carlin
@@ -14318,7 +14318,7 @@ Chadwicks
 Chaffee
 Chagrin Falls
 Chain Lake
-Chain O' Lakes
+Chain O Lakes
 Chain of Rocks
 Chain-O-Lakes
 Chalco
@@ -14658,7 +14658,7 @@ Clarissa
 Clark
 Clark Fork
 Clark Mills
-Clark's Point
+Clarks Point
 Clarkdale
 Clarkedale
 Clarkesville
@@ -14834,7 +14834,7 @@ Cocoa West
 Coconut Creek
 Cody
 Coeburn
-Coeur d'Alene
+Coeur dAlene
 Coffee City
 Coffee Creek
 Coffee Springs
@@ -15468,9 +15468,9 @@ Cypress Lake
 Cypress Quarters
 Cyril
 Cyrus 
-D'Hanis
-D'Iberville
-D'Lo
+DHanis
+DIberville
+DLo
 Dacoma
 Dacono
 Dacula
@@ -17434,7 +17434,7 @@ Fountain Hill
 Fountain Hills
 Fountain Inn
 Fountain Lake
-Fountain N' Lakes
+Fountain N Lakes
 Fountain Run
 Fountain Springs
 Fountain Valley
@@ -18006,7 +18006,7 @@ Golden Meadow
 Golden Shores
 Golden Triangle
 Golden Valley
-Golden's Bridge
+Goldens Bridge
 Goldendale
 Goldenrod
 Goldfield
@@ -19030,7 +19030,7 @@ Hilda
 Hildale
 Hildebran
 Hildreth
-Hill 'n Dale
+Hill n Dale
 Hill City
 Hill Country Village
 Hill View Heights
@@ -19675,7 +19675,7 @@ Jackson Lake
 Jacksonboro
 Jacksonburg
 Jacksonport
-Jacksons' Gap
+Jacksons Gap
 Jacksonville
 Jacksonville Beach
 Jacksonwald
@@ -20351,7 +20351,7 @@ Kykotsmovi Village
 Kyle
 Kylertown
 Kysorville 
-L'Anse
+LAnse
 La Alianza
 La Barge
 La Belle
@@ -20604,7 +20604,7 @@ Lake Kiowa
 Lake Koshkonong
 Lake Lafayette
 Lake Lakengren
-Lake Land'Or
+Lake LandOr
 Lake Latonka
 Lake Leelanau
 Lake Lillian
@@ -20778,7 +20778,7 @@ Lanare
 Lanark
 Lancaster
 Lance Creek
-Land O' Lakes
+Land O Lakes
 Landa
 Landen
 Lander
@@ -20988,7 +20988,7 @@ Lee
 Lee Acres
 Lee Mont
 Lee Vining
-Lee's Summit
+Lees Summit
 Leechburg
 Leedey
 Leeds
@@ -21987,7 +21987,7 @@ Marthasville
 Martin
 Martin City
 Martin Lake
-Martin's Additions
+Martins Additions
 Martindale
 Martinez
 Martinez Lake
@@ -22559,7 +22559,7 @@ Millen
 Miller
 Miller City
 Miller Place
-Miller's Cove
+Millers Cove
 Millers Creek
 Millers Falls
 Millers Lake
@@ -22883,8 +22883,8 @@ Morgan City
 Morgan Farm
 Morgan Heights
 Morgan Hill
-Morgan's Point
-Morgan's Point Resort
+Morgans Point
+Morgans Point Resort
 Morgandale
 Morganfield
 Morganton
@@ -23998,11 +23998,11 @@ Nutrioso
 Nutter Fort
 Nyack
 Nyssa 
-O'Brien
-O'Donnell
-O'Fallon
-O'Kean
-O'Neill
+OBrien
+ODonnell
+OFallon
+OKean
+ONeill
 Oacoma
 Oak
 Oak Beach
@@ -24685,7 +24685,7 @@ Parker
 Parker City
 Parker School
 Parker Strip
-Parker's Crossroads
+Parkers Crossroads
 Parkerfield
 Parkers Prairie
 Parkers Settlement
@@ -25435,7 +25435,7 @@ Port Monmouth
 Port Murray
 Port Neches
 Port Norris
-Port O'Connor
+Port OConnor
 Port Orange
 Port Orchard
 Port Orford
@@ -26011,7 +26011,7 @@ Reidland
 Reidsville
 Reidville
 Reiffton
-Reile's Acres
+Reiles Acres
 Reinbeck
 Reinerton
 Reinholds
@@ -26326,7 +26326,7 @@ Rockwell City
 Rockwood
 Rocky
 Rocky Boy West
-Rocky Boy's Agency
+Rocky Boys Agency
 Rocky Ford
 Rocky Fork Point
 Rocky Hill
@@ -27150,7 +27150,7 @@ Severna Park
 Severy
 Sevierville
 Seville
-Sewall's Point
+Sewalls Point
 Sewanee
 Seward
 Sewaren
@@ -27868,7 +27868,7 @@ Spiritwood
 Spiritwood Lake
 Spiro
 Spivey
-Spivey's Corner
+Spiveys Corner
 Splendora
 Spofford
 Spokane
@@ -28004,7 +28004,7 @@ St. Martins
 St. Martinville
 St. Mary
 St. Mary of the Woods
-St. Mary's
+St. Marys
 St. Marys Point
 St. Matthews
 St. Maurice
@@ -28326,7 +28326,7 @@ Sula
 Sulligent
 Sullivan
 Sullivan City
-Sullivan's Island
+Sullivans Island
 Sully
 Sulphur
 Sulphur Rock
@@ -28769,7 +28769,7 @@ Thomasville
 Thompson
 Thompson Falls
 Thompson Springs
-Thompson's Station
+Thompsons Station
 Thompsons
 Thompsontown
 Thompsonville
@@ -28993,7 +28993,7 @@ Tower City
 Tower Hill
 Tower Hills
 Tower Lakes
-Town 'n' Country
+Town n Country
 Town Creek
 Town Line
 Town and Country
@@ -29225,7 +29225,7 @@ Tyro
 Tyrone
 Tyronza
 Tysons Corner 
-Ualapu'e
+Ualapue
 Ubly
 Ucon
 Udall
@@ -30526,7 +30526,7 @@ Wilsey
 Wilson
 Wilson City
 Wilson Creek
-Wilson's Mills
+Wilsons Mills
 Wilsonia
 Wilsonville
 Wilton

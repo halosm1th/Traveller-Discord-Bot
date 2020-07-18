@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using TravellerSubsectorMap;
 
 namespace TravellerHtmlGenerators
@@ -27,6 +28,7 @@ namespace TravellerHtmlGenerators
                 }
             }
 
+            //TODO Remove default call
             CreateGalaxyHTMLPages();
         }
 
@@ -34,9 +36,12 @@ namespace TravellerHtmlGenerators
         {
             var galaxy = new Galaxy("Berlinnic");
             galaxy.GenerateGalaxy();
-            var path = Directory.GetCurrentDirectory() + $"/{galaxy.Name}/";
+            var path = $"Z:\\ProgramData\\Galaxy/{galaxy.Name}/";
             Directory.CreateDirectory(path);
-            galaxy.WriteWholeGalaxyHTML(path);
+            Task.Run( () => galaxy.WriteWholeGalaxyHTMLAsync(path));
+
+            Console.WriteLine("It is done?");
+            Console.ReadLine();
         }
 
         private static void CreateUCTable()

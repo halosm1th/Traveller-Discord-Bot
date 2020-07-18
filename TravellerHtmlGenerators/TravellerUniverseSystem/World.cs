@@ -4,11 +4,14 @@ using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
+using TravellerSubsectorMap;
 
 namespace Traveller_subsector_generator
 {
     class World
     {
+        #region Variables
         public bool HasWorld = false;
 
         public int X;
@@ -18,15 +21,34 @@ namespace Traveller_subsector_generator
         public int WorldSize;
         public int WorldAtmosphere;
         public int WorldHydrographics;
-        public int Popuation;
+        public int PopulationStat;
+
+        public int Population
+        {
+            get
+            {
+                if (_population == default)
+                {
+                    var pop = 0;
+                    try
+                    {
+                        pop = Convert.ToInt32(PopulationDescription());
+                    }
+                    catch{}
+
+                    _population = pop;
+                }
+                return _population;
+            }
+        }
         public int GovernmentType;
         public int LawLevel;
         public int TechLevel;
         public bool MilitaryBase;
         public bool GasGiant;
         public bool OtherBase;
-        
 
+        private int _population = default;
 
         public string UWP
         {
@@ -38,7 +60,7 @@ namespace Traveller_subsector_generator
                 var size = WorldSize.ToString("X");
                 var atmo = WorldAtmosphere.ToString("X");
                 var hydo = WorldHydrographics.ToString("X");
-                var pop = Popuation.ToString("X");
+                var pop = PopulationStat.ToString("X");
                 var gov = GovernmentType.ToString("X");
                 var law = LawLevel.ToString("X");
                 var tech = TechLevel.ToString("X");
@@ -62,8 +84,9 @@ namespace Traveller_subsector_generator
                 return $"{other} {gas} {military}";
             }
         }
-
         private Subsector _subsector;
+        #endregion Variables
+        #region Constructors
         public World(string name, string code, Subsector subsector)
         {
             Name = name;
@@ -93,7 +116,7 @@ namespace Traveller_subsector_generator
                         WorldHydrographics = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
                         break;
                     case 4:
-                        Popuation = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
+                        PopulationStat = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
                         break;
                     case 5:
                         GovernmentType = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
@@ -162,7 +185,7 @@ namespace Traveller_subsector_generator
                         WorldHydrographics = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
                         break;
                     case 4:
-                        Popuation = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
+                        PopulationStat = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
                         break;
                     case 5:
                         GovernmentType = int.Parse(code[i].ToString(), NumberStyles.HexNumber);
@@ -198,8 +221,8 @@ namespace Traveller_subsector_generator
             _subsector = subsector;
             GenerateWorld();
         }
-
-
+        #endregion
+        #region Description
         public string StarportDescrption()
             => StarportQuality switch
             {
@@ -267,17 +290,35 @@ namespace Traveller_subsector_generator
                 _ => "0-5%. | Desert World"
             };
 
-        public string PopulationDescription()
+        static Random random = new Random();
+        //Give us an actual size stat
+        public long PopulationDescription()
         {
-            var r = new Random();
-            var size = "";
-            size += r.Next(1, 10);
-            for (int i = 0; i < Popuation; i++)
+            return PopulationStat switch
             {
-                size += "0";
-            }
+                0 => 0,
+                1 => LongRandom(1,100),
+                2 => LongRandom(100, 1000),
+                3 => LongRandom(1000, 10000),
+                4 => LongRandom(10000, 100000),
+                5 => LongRandom(100000, 1000000),
+                6 => LongRandom(1000000, 10000000),
+                7 => LongRandom(10000000, 100000000),
+                8 => LongRandom(100000000, 1000000000),
+                9 => LongRandom(1000000000, 10000000000),
+                10 => LongRandom(10000000000, 100000000000),
+                11 => LongRandom(100000000000, 1000000000000),
+                12 => LongRandom(1000000000000, 10000000000000),
+                _ => LongRandom(0, 10)
+                };
+        }
 
-            return size;
+        private long LongRandom(long min, long max)
+        {
+            long result = random.Next((Int32)(min >> 32), (Int32)(max >> 32));
+            result = (result << 32);
+            result = result | (long)random.Next((Int32)min, (Int32)max);
+            return result;
         }
 
         public string GovernmentTypeDescrption() => GovernmentType switch
@@ -355,7 +396,8 @@ namespace Traveller_subsector_generator
             15 => " (High Stellar): Black globe generators suggest a new direction for defensive technologies, while the development of synthetic anagathics means that the human lifespan is now vastly increased. Jump 6 travel.",
             _ => "I didn't code this far"
     };
-
+        #endregion
+        #region OtherDataFunctions
         public string WorldData()
         {
             return $"```Universal World Profile.\n" +
@@ -367,7 +409,7 @@ namespace Traveller_subsector_generator
                 $"World Size: {WorldSizeDescription()}\n" +
                 $"World atmosphere: {WorldAtmosphereDescrpition()}\n" +
                 $"World hydrographics: {WorldHydrographicsDescription()}\n" +
-                $"Population: {PopulationDescription()}\n" +
+                $"Population: {Population}\n" +
                 $"Government Type: {GovernmentTypeDescrption()}\n" +
                 $"Law Level: {LawLevelDescription()}\n" +
                 $"Tech Level: {TechLevelDescription() }\n" +
@@ -385,38 +427,38 @@ namespace Traveller_subsector_generator
                 {
                     return ((WorldAtmosphere > 3 && WorldAtmosphere < 9)
                         && (WorldHydrographics > 3 && WorldHydrographics < 9)
-                        && (Popuation > 4 && Popuation < 8))? "(Ag)riculture: Dedicated to farming and food production. Often, they are divided into vast semi-feudal estates." : "";
+                        && (PopulationStat > 4 && PopulationStat < 8))? "(Ag)riculture: Dedicated to farming and food production. Often, they are divided into vast semi-feudal estates." : "";
                 },
                 () => 
                 { return 
                     (WorldAtmosphere == 0 && WorldAtmosphere == 0 && WorldHydrographics == 0)? "(As)teroids: Usually mining colonies, but can also be orbital factories or colonies." : ""; },
-                () => { return (Popuation == 0 && GovernmentType == 0 && LawLevel == 0)? "(Ba)rren: Uncolonised and empty." : ""; },
+                () => { return (PopulationStat == 0 && GovernmentType == 0 && LawLevel == 0)? "(Ba)rren: Uncolonised and empty." : ""; },
                 () => { return (WorldAtmosphere >= 2 && WorldHydrographics == 0)? "(De)sert: Dry and barely habitable" : ""; },
                 () => { return (WorldAtmosphere >= 10 && WorldHydrographics >= 1)? "(Fl)uid Oceans: Worlds where the surface liquid is something other than water, and so are incompatible with Earth-derived life" : ""; },
                 () => { return (
                     (WorldSize > 5 && WorldSize < 9)
                     && (WorldAtmosphere == 5 || WorldAtmosphere == 6 || WorldAtmosphere == 8)
                     && (WorldHydrographics >=5 && WorldHydrographics <= 7))? "(Ga)rden: Worlds that are like earth" : ""; },
-                () => { return (Popuation >= 9)? "(Hi)gh population: A population in the billions" : ""; },
+                () => { return (PopulationStat >= 9)? "(Hi)gh population: A population in the billions" : ""; },
                 () => { return (TechLevel >= 12)? "(Ht)High Tech: Among the most technologically advanced in Charted Space" : ""; },
                 () => { return (
                     (WorldAtmosphere == 0 || WorldAtmosphere == 1)
                     && WorldHydrographics > 1)? "(Ie)Ice-Capped: Worlds that have most of their surface liquid frozen in polar ice caps, and are cold and dry." : ""; },
-                () => { return (Popuation >= 9 &&
+                () => { return (PopulationStat >= 9 &&
                                 ((WorldAtmosphere >= 0 && WorldAtmosphere <=2)
-                                    || WorldAtmosphere == 4 || WorldAtmosphere == 7 || WorldAtmosphere == 9))? "(In)dustrial: Dominated by factories and cities." : ""; },
-                () => { return (Popuation <=3)? "(Lo)w population: A population of only a few thousand or less." : ""; },
+                                 || WorldAtmosphere == 4 || WorldAtmosphere == 7 || WorldAtmosphere == 9))? "(In)dustrial: Dominated by factories and cities." : ""; },
+                () => { return (PopulationStat <=3)? "(Lo)w population: A population of only a few thousand or less." : ""; },
                 () => { return (TechLevel <=5)? "(Lt)Low tech: Pre-industrial and cannot produce advanced goods." : ""; },
                 () => { return ((WorldAtmosphere >= 0 && WorldAtmosphere <=3)
                         && (WorldHydrographics >= 0 && WorldHydrographics <= 3)
-                        && Popuation >= 6)? "(Na) Non-Agricultural: Too dry or barren to support their populations using conventional food production." : ""; },
-                () => { return (Popuation <=6 && Popuation >= 0)? "(Ni) Non-Industrial: Too low in population to maintain an extensive industrial base. " : ""; },
+                        && PopulationStat >= 6)? "(Na) Non-Agricultural: Too dry or barren to support their populations using conventional food production." : ""; },
+                () => { return (PopulationStat <=6 && PopulationStat >= 0)? "(Ni) Non-Industrial: Too low in population to maintain an extensive industrial base. " : ""; },
                 () => { return (
                     (WorldAtmosphere >=2 && WorldAtmosphere <=5)
                     && (WorldHydrographics >= 0 && WorldHydrographics <= 3))? "(Po)or: Lacking resources, viable land or sufficient population to be anything other than marginal colonies." : ""; },
                 () => { return (
                         (WorldAtmosphere == 6 || WorldAtmosphere == 8)
-                        && (Popuation >= 6 && Popuation <=8)
+                        && (PopulationStat >= 6 && PopulationStat <=8)
                         && (GovernmentType >= 4 && GovernmentType <= 9))? "(Ri)ch: Blessed with a stable government and viable." : ""; },
                 () => { return (WorldAtmosphere == 0)? "(Va)cuum: No atmosphere." : ""; },
                 () => { return (WorldHydrographics >= 10)? "(Wa)ter World: Almost entirely water-ocean across their surface." : ""; },
@@ -438,7 +480,8 @@ namespace Traveller_subsector_generator
                    || (GovernmentType == 0 || GovernmentType == 7 || GovernmentType == 10)
                    || (LawLevel == 0 || LawLevel >= 9);
         }
-
+        #endregion
+        #region Calculate stats
         private static Random die = new Random();
 
         private int Roll2D6(int modifier = 0, int bottom = 2, int top = 13)
@@ -450,19 +493,19 @@ namespace Traveller_subsector_generator
         {
             int modifier = 0;
 
-            if (Popuation >= 8)
+            if (PopulationStat >= 8)
             {
                 modifier += 1;
             }
-            else if (Popuation >= 10)
+            else if (PopulationStat >= 10)
             {
                 modifier += 2;
             }
-            else if (Popuation <= 4)
+            else if (PopulationStat <= 4)
             {
                 modifier -= 1;
             }
-            else if (Popuation <= 2)
+            else if (PopulationStat <= 2)
             {
                 modifier -= 2;
             }
@@ -546,7 +589,7 @@ namespace Traveller_subsector_generator
                     break;
             }
 
-            switch (Popuation)
+            switch (PopulationStat)
             {
                 case 1:
                 case 2:
@@ -592,8 +635,8 @@ namespace Traveller_subsector_generator
             WorldAtmosphere = Math.Max(0, WorldSize <= 0 ? 0 : Roll2D6(WorldSize - 7));
             WorldHydrographics = Math.Max(0, WorldAtmosphere <= 0 ? 0 : Roll2D6(WorldAtmosphere - 7));
 
-            Popuation = Math.Max(0, Roll2D6(2));
-            GovernmentType = Math.Max(0, Roll2D6(Popuation - 7));
+            PopulationStat = Math.Max(0, Roll2D6(2));
+            GovernmentType = Math.Max(0, Roll2D6(PopulationStat - 7));
             LawLevel = Math.Max(0, Roll2D6(GovernmentType - 7));
 
             StarportQuality = CalculateStarport();
@@ -603,54 +646,38 @@ namespace Traveller_subsector_generator
             MilitaryBase = Roll2D6() >= 8;
             OtherBase = Roll2D6() >= 8;
         }
-
+        #endregion
+        #region HTML
         public string GetHTML()
         {
-            var html = $@"<!DOCTYPE html>
-<html>
-<head>
-    <title>{Name}</title>
-    <link rel=""stylesheet"" href=""style.css"">
-    <!-- This is a comment, by the way -->
-</head>
-<body>
-<h1>{Name}</h1>
-<p>the world {Name} is in the {_subsector.Name} has the following information:
-    <table style=""width:25.5em;border-spacing:2px;float:left;"">
+            var html = $@"
+<div>
+    <table style=""width:25.5em;border-spacing:2px;"">
         <tbody>
             <tr><td colspan=""2"" id=""seperator""></td></tr>
             <tr><td>Area</td><td>Value</td></tr>
-            <tr><td>Location</td><td>{X}:{Y}</td></tr>
-            <tr><td>Starport Quality</td><td>{StarportQuality}</td></tr>
-            <tr><td>Size</td><td>{WorldSize}</td></tr>
-            <tr><td>Atmosphere</td><td>{WorldAtmosphere}</td></tr>
-            <tr><td>Hydrographics</td><td>{WorldHydrographics}</td></tr>
-            <tr><td>Population</td><td>{StarportQuality}</td></tr>
-            <tr><td>Primary Government</td><td>{StarportQuality}</td></tr>
-            <tr><td>Law Level</td><td>{StarportQuality}</td></tr>
-            <tr><td>Tech Level</td><td>{StarportQuality}</td></tr>
-            <tr><td>Temperature</td><td>{GenerateWorldTemperatureHtml()}</td></tr>
-            <tr><td colspan=""2"" id=""seperator""></td></tr>
-            <tr><td>Trade Codes</td></tr>
-            <tr><td style=""color:orange"">{GetTradeCodes()}</td></tr>
-            <tr><td>Bases in system</td></tr>
-{GetBasesInSystemHTML()}
-
+            <tr style=""color:#ffe81F""><td>Name</td><td>{Name}</td></tr>
+            <tr style=""color:#ffe81F""><td>UWP</td><td>{UWP}</td></tr>
+            <tr style=""color:#ffe81F""><td>Location</td><td>{X}:{Y}</td></tr>
+            <tr style=""color:#ffe81F""><td>Starport Quality</td><td>{StarportDescrption()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Size</td><td>{WorldSizeDescription()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Atmosphere</td><td>{WorldAtmosphereDescrpition()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Hydrographics</td><td>{WorldHydrographicsDescription()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Population</td><td>{Population}</td></tr>
+            <tr style=""color:#ffe81F""><td>Primary Government</td><td>{GovernmentTypeDescrption()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Law Level</td><td>{LawLevelDescription()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Tech Level</td><td>{TechLevelDescription()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Temperature</td><td>{GenerateWorldTemperatureHtml()}</td></tr>
+            <tr style=""color:#ffe81F""><td colspan=""2"" id=""seperator""></td></tr>
+            <tr style=""color:#ffe81F""><td>Trade Codes</td></tr>
+            <tr style=""color:#ffe81F""><td style=""color:orange"">{GetTradeCodes()}</td></tr>
+            <tr style=""color:#ffe81F""><td>Bases in system</td></tr>
+            {GetBasesInSystemHTML()}
+            <tr><td>Factions</td></tr>
+            <tr><td>Government Type</td><td>Strength</td></tr>
+            {GenerateFactionsHTML()}
         </tbody>
-    </table>
-</p>
-<h2>Factions</h2>
-<table>
-<tbody>
-<tr><td colspan=""2"" id=""seperator""></td></tr>
-<tr><td>Government Type</td><td>Strength</td></tr>
-{GenerateFactionsHTML()}
-</tbody>
-</table>
-<h2>UWP</h2>
-<p>{UWP}</p>
-</body>
-</html>";
+    </table></div>";
             return html;
         }
 
@@ -660,17 +687,17 @@ namespace Traveller_subsector_generator
 
             if (GasGiant)
             {
-                sb.Append("<tr><td>Gas Giant</td></tr>");
+                sb.Append(@"<tr style=""color:orangered""><td>Gas Giant</td></tr>");
             }
 
             if (MilitaryBase)
             {
-                sb.Append("<tr><td>Military Base</td></tr>");
+                sb.Append("<tr style=\"color:#6bDA26\"><td>Military Base</td></tr>");
             }
 
             if (OtherBase)
             {
-                sb.Append("<tr><td>Other Base</td></tr>");
+                sb.Append("<tr style=\"color:white\"><td>Other Base</td></tr>");
             }
 
             return sb.ToString();
@@ -688,7 +715,7 @@ namespace Traveller_subsector_generator
                 var strengthText = GetFactionStrengthText(strength);
 
                 var government = GovernmentTypeDescrption(rand.Next(2,13));
-                sb.Append($"<tr><td>{government}</td><td>{strengthText}<td></tr>");
+                sb.Append($"<tr><td style=\"color:#ffe81F\">{government}</td><td style=\"color:#fa0000\">{strengthText}<td></tr>");
             }
 
             return sb.ToString();
@@ -706,28 +733,21 @@ namespace Traveller_subsector_generator
 
         private string GetFactionStrengthText(int number)
         {
-            switch (number)
+            return number switch
             {
-                case 2:
-                case 3:
-                    return "Obscure group - few have heard of them, no popular support";
-                case 4:
-                case 5:
-                    return "Fringe Group - Few supporters";
-                case 6:
-                case 7:
-                    return "Minor gorup - Some supporters";
-                case 8:
-                case 9:
-                    return "Notable group - significant support, well known";
-                case 10:
-                case 11:
-                    return "Significant - nearly as poweful as government";
-                case 12:
-                    return "overwhelming popular support - more powerful than government";
-            }
-
-            return "Error!";
+                2 => "Obscure group - few have heard of them, no popular support",
+                3 => "Obscure group - few have heard of them, no popular support",
+                4 => "Fringe Group - Few supporters",
+                5 => "Fringe Group - Few supporters",
+                6 => "Minor gorup - Some supporters",
+                7 => "Minor gorup - Some supporters",
+                8 => "Notable group - significant support, well known",
+                9 => "Notable group - significant support, well known",
+                10 => "Significant - nearly as poweful as government",
+                11 => "Significant - nearly as poweful as government",
+                12 => "overwhelming popular support - more powerful than government",
+                _ => "Error!"
+            };
         }
 
         private string GenerateTemperature(int number)
@@ -803,11 +823,7 @@ namespace Traveller_subsector_generator
             }
         }
 
-        public void WriteSystemHTML(string path)
-        {
-            File.WriteAllText(path+$"/{Name.Replace(" ","_")}.html",GetHTML());
-        }
-
+        #endregion
         public override string ToString()
         {
             var gas = GasGiant ? 'Y' : 'N';

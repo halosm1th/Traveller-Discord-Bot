@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TravellerSubsectorMap;
 
 namespace Traveller_subsector_generator
 {
@@ -12,7 +13,7 @@ namespace Traveller_subsector_generator
     {
         public string Name;
 
-        public long Population => sectors.Cast<Sector>().Sum(sector => sector.Population);
+
         public long WorldCount => sectors.Cast<Sector>().Sum(sector => sector.WorldCount);
 
         Sector[,] sectors;
@@ -44,12 +45,12 @@ namespace Traveller_subsector_generator
 <html>
 <head>
     <title>{Name}</title>
-    <link rel=""stylesheet"" href=""style.css"">
+    <link rel=""stylesheet"" href=""{Galaxy.StyleLocation}"">
     <!-- This is a comment, by the way -->
 </head>
 <body>
 <h1>{Name}</h1>
-<p>the {Name} SuperSector contains the following {sectors.GetLength(0) * sectors.GetLength(1)} Sectors: 
+<p>the {Name} SuperSector is inside the <a href=""../{_mega.Name.Replace(" ", "_")}.html"">{_mega.Name} Megasector</a> and contains the following {sectors.GetLength(0) * sectors.GetLength(1)} Sectors: 
     <ol>";
             var middle = GetMiddleText();
             var bottom = $@"
@@ -59,9 +60,6 @@ namespace Traveller_subsector_generator
 <h2>Stats</h2>
 Some stats about the {Name} SuperSector:
 <ul>
-    <li>
-        Population: {Population}
-    </li>
     <li>
         Number of Planets: {WorldCount}
     </li>
@@ -93,6 +91,26 @@ Some stats about the {Name} SuperSector:
                 var percent = Math.Round((double)current / (double)total * 100, 0);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write($"\r[{Name}] SuperSector: {percent}% ({current}/{total})");
+            }
+
+        }
+
+        public async Task WriteWholeSupersectorHTMLAsync(string path)
+        {
+            Console.WriteLine();
+            int current = 0;
+            var total = sectors.GetLength(0) * sectors.GetLength(1);
+            await File.WriteAllTextAsync(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
+            foreach (var sector in sectors)
+            {
+                var megaPath = $"{path}/{sector.Name}".Replace(" ", "_");
+                Directory.CreateDirectory(megaPath);
+                await sector.WriteWholeSectorHTMLAsync(megaPath);
+
+                current++;
+                var percent = Math.Round((double)current / (double)total * 100, 0);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine($"\r[{Name}] SuperSector: {percent}% ({current}/{total})");
             }
 
         }

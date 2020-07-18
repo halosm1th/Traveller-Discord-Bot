@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TravellerSubsectorMap
 {
@@ -9,19 +11,7 @@ namespace TravellerSubsectorMap
         private Quadrant[,] quadrants;
         public string Name;
         public readonly int QUADRANT_SIZE = 3;
-
-        public long Population
-        {
-            get
-            {
-                if (_pop <= 0)
-                {
-                    _pop = quadrants.Cast<Quadrant>().Sum(quadrant => quadrant.Population);
-                }
-
-                return _pop;
-            }
-        }
+        public static readonly string StyleLocation = "File://"+Directory.GetCurrentDirectory() + "/style.css";
 
         public long WorldCount
         {
@@ -34,9 +24,7 @@ namespace TravellerSubsectorMap
 
                 return _worldCount;
             }
-        } 
-
-        private long _pop = -1;
+        }
         private long _worldCount = -1;
 
         public Galaxy(string name)
@@ -103,7 +91,21 @@ namespace TravellerSubsectorMap
             
             
             return String.Format(template, 
-                Name,qua1Name,qua2Name,qua3Name,qua4Name,Population,WorldCount);
+                Name,qua1Name,qua2Name,qua3Name,qua4Name,WorldCount,StyleLocation);
+        }
+
+        public async Task<string> GetHTMLAsync()
+        {
+            var template = File.ReadAllTextAsync(Directory.GetCurrentDirectory() + "/galaxyTemplate.html");
+
+            var qua1Name = quadrants[0, 0].Name.Replace(" ", "_");
+            var qua2Name = quadrants[0, 1].Name.Replace(" ", "_");
+            var qua3Name = quadrants[1, 0].Name.Replace(" ", "_");
+            var qua4Name = quadrants[1, 1].Name.Replace(" ", "_");
+
+
+            return String.Format(await template,
+                Name, qua1Name, qua2Name, qua3Name, qua4Name, WorldCount, StyleLocation);
         }
 
         /// <summary>
@@ -137,6 +139,37 @@ namespace TravellerSubsectorMap
                 Console.Write($"\r[{Name}] Galaxy: {percent}% ({current}/{total})");
 
             }
+        }
+
+        public bool Done = false;
+        public async Task WriteWholeGalaxyHTMLAsync(string path)
+        {
+            Console.WriteLine();
+            int current = 0;
+            int total = quadrants.GetLength(0) * quadrants.GetLength(1);
+            var html = GetHTMLAsync();
+            var finishedQuadrents = new List<Task>();
+            foreach (var quadrent in quadrants)
+            {
+                var quadrantPath = $"{path}/{quadrent.Name}".Replace(" ", "_");
+                Directory.CreateDirectory(quadrantPath);
+                var newQua = Task.Run(() => quadrent.WriteWholeQuadrantHTML(quadrantPath));
+                finishedQuadrents.Add(newQua);
+
+            }
+
+            current = finishedQuadrents.Count(x => x.IsCompleted);
+            while (current < total)
+            {
+                current = finishedQuadrents.Count(x => x.IsCompleted);
+                var percent = Math.Round((double)current / (double)total * 100, 0);
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine($"\r[{Name}] Galaxy: {percent}% ({current}/{total})");
+                await Task.Delay(1000 * total - current);
+            }
+
+            await File.WriteAllTextAsync(path + $"/{Name}.html", await html);
+            Done = true;
         }
     }
 }

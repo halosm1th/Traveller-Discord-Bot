@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Traveller_subsector_generator;
 
 namespace TravellerSubsectorMap
@@ -11,18 +13,7 @@ namespace TravellerSubsectorMap
         private MegaSector[,] megaSectors;
         private readonly int MEGA_X_SIZE = 8;
         private readonly int MEGA_Y_SIZE = 8;
-        public long Population
-        {
-            get
-            {
-                if (_pop <= 0)
-                {
-                    _pop = megaSectors.Cast<MegaSector>().Sum(quadrant => quadrant.Population);
-                }
 
-                return _pop;
-            }
-        }
 
         public long WorldCount
         {
@@ -37,7 +28,6 @@ namespace TravellerSubsectorMap
             }
         }
 
-        private long _pop = -1;
         private long _worldCount = -1;
 
 
@@ -85,11 +75,11 @@ namespace TravellerSubsectorMap
         public string GetHTML()
         {
             var sb = new StringBuilder();
-            var topText = $@"<!DOCTYPE html><html><head><title>{Name}</title><link rel=""stylesheet"" href=""style.css""></ head >
-                <body><h1>{Name}</h1><p> the {Name} Quadrant contains the following MegaSectors: <ul> ";
+            var topText = $@"<!DOCTYPE html><html><head><title>{Name}</title><link rel=""stylesheet"" href=""{Galaxy.StyleLocation}""></ head >
+                <body><h1>{Name}</h1><p> the {Name} Quadrant is in the <a href=""../{Galaxy.Name.Replace(" ", "_")}.html"">{Galaxy.Name} Galaxy</a>contains the following MegaSectors: <ul> ";
             
-            var bottomText = $@"</ul></p><h2>Stats</h2>Some stats about the {Name} Quadrant: <ul><li>Population: {Population}
-                </li><li> Number of Planets: {WorldCount}</li></ul></body></html>";
+            var bottomText = $@"</ul></p><h2>Stats</h2>Some stats about the {Name} Quadrant: <ul>
+<li> Number of Planets: {WorldCount}</li></ul></body></html>";
 
             sb.Append(topText);
             var middleText = GenerateMiddleText();
@@ -103,7 +93,7 @@ namespace TravellerSubsectorMap
         {
             Console.WriteLine();
             int current = 0;
-            int total = megaSectors.GetLength(0) * megaSectors.GetLength(1);
+            int total = megaSectors.GetLength(0) * megaSectors.GetLength(1) -1;
             File.WriteAllText(path+$"/{Name.Replace(" ", "_")}.html",GetHTML());
             foreach (var mega in megaSectors)
             {
@@ -116,6 +106,37 @@ namespace TravellerSubsectorMap
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.Write($"\r[{Name}] Quadrant: {percent}% ({current}/{total})");
             }
+            Console.WriteLine();
+
+        }
+
+        public async Task WriteWholeQuadrantHTMLAsync(string path)
+        {
+            Console.WriteLine();
+            int current = 0;
+            int total = megaSectors.GetLength(0) * megaSectors.GetLength(1) -1;
+            var write = File.WriteAllTextAsync(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
+            var megaTasks = new List<Task>();
+            foreach (var mega in megaSectors)
+            {
+                var megaPath = $"{path}/{mega.Name.Replace(" ", "_")}";
+                Directory.CreateDirectory(megaPath);
+                var megaRun =Task.Run( () => mega.WriteWholeMegasectorHTML(megaPath));
+                megaTasks.Add(megaRun);
+
+            }
+
+            current = megaTasks.Count(x => x.IsCompleted);
+            while (current < total)
+            {
+                current = megaTasks.Count(x => x.IsCompleted);
+                var percent = Math.Round((double)current / (double)total * 100, 0);
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine($"\r[{Name}] Quadrant: {percent}% ({current}/{total})");
+                await Task.Delay(1000 * total - current);
+            }
+
+            await write;
             Console.WriteLine();
 
         }
