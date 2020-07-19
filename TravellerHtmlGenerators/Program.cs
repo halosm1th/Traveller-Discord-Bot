@@ -38,7 +38,7 @@ namespace TravellerHtmlGenerators
             galaxy.GenerateGalaxy();
             var path = $"Z:\\ProgramData\\Galaxy/{galaxy.Name}/";
             Directory.CreateDirectory(path);
-            Task.Run( () => galaxy.WriteWholeGalaxyHTMLAsync(path));
+            galaxy.WriteWholeGalaxyHTML(path);
 
             Console.WriteLine("It is done?");
             Console.ReadLine();

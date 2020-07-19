@@ -23,16 +23,16 @@ namespace Traveller_subsector_generator
         public int WorldHydrographics;
         public int PopulationStat;
 
-        public int Population
+        public string Population
         {
             get
             {
                 if (_population == default)
                 {
-                    var pop = 0;
+                    var pop = "";
                     try
                     {
-                        pop = Convert.ToInt32(PopulationDescription());
+                        pop = String.Intern(PopulationDescription());
                     }
                     catch{}
 
@@ -48,7 +48,7 @@ namespace Traveller_subsector_generator
         public bool GasGiant;
         public bool OtherBase;
 
-        private int _population = default;
+        private string _population = default;
 
         public string UWP
         {
@@ -290,35 +290,10 @@ namespace Traveller_subsector_generator
                 _ => "0-5%. | Desert World"
             };
 
-        static Random random = new Random();
         //Give us an actual size stat
-        public long PopulationDescription()
+        public string PopulationDescription()
         {
-            return PopulationStat switch
-            {
-                0 => 0,
-                1 => LongRandom(1,100),
-                2 => LongRandom(100, 1000),
-                3 => LongRandom(1000, 10000),
-                4 => LongRandom(10000, 100000),
-                5 => LongRandom(100000, 1000000),
-                6 => LongRandom(1000000, 10000000),
-                7 => LongRandom(10000000, 100000000),
-                8 => LongRandom(100000000, 1000000000),
-                9 => LongRandom(1000000000, 10000000000),
-                10 => LongRandom(10000000000, 100000000000),
-                11 => LongRandom(100000000000, 1000000000000),
-                12 => LongRandom(1000000000000, 10000000000000),
-                _ => LongRandom(0, 10)
-                };
-        }
-
-        private long LongRandom(long min, long max)
-        {
-            long result = random.Next((Int32)(min >> 32), (Int32)(max >> 32));
-            result = (result << 32);
-            result = result | (long)random.Next((Int32)min, (Int32)max);
-            return result;
+           return (DateTime.UtcNow.Ticks * die.Next(1, 10)).ToString().Substring(0, PopulationStat);
         }
 
         public string GovernmentTypeDescrption() => GovernmentType switch
@@ -651,33 +626,45 @@ namespace Traveller_subsector_generator
         public string GetHTML()
         {
             var html = $@"
-<div>
-    <table style=""width:25.5em;border-spacing:2px;"">
-        <tbody>
-            <tr><td colspan=""2"" id=""seperator""></td></tr>
-            <tr><td>Area</td><td>Value</td></tr>
-            <tr style=""color:#ffe81F""><td>Name</td><td>{Name}</td></tr>
-            <tr style=""color:#ffe81F""><td>UWP</td><td>{UWP}</td></tr>
-            <tr style=""color:#ffe81F""><td>Location</td><td>{X}:{Y}</td></tr>
-            <tr style=""color:#ffe81F""><td>Starport Quality</td><td>{StarportDescrption()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Size</td><td>{WorldSizeDescription()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Atmosphere</td><td>{WorldAtmosphereDescrpition()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Hydrographics</td><td>{WorldHydrographicsDescription()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Population</td><td>{Population}</td></tr>
-            <tr style=""color:#ffe81F""><td>Primary Government</td><td>{GovernmentTypeDescrption()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Law Level</td><td>{LawLevelDescription()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Tech Level</td><td>{TechLevelDescription()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Temperature</td><td>{GenerateWorldTemperatureHtml()}</td></tr>
-            <tr style=""color:#ffe81F""><td colspan=""2"" id=""seperator""></td></tr>
-            <tr style=""color:#ffe81F""><td>Trade Codes</td></tr>
-            <tr style=""color:#ffe81F""><td style=""color:orange"">{GetTradeCodes()}</td></tr>
-            <tr style=""color:#ffe81F""><td>Bases in system</td></tr>
+        <div>
+            <div>Name: {Name}</div>
+            <br />
+            <div>UWP: {UWP}</div>
+            <br />
+            <div>Location: {X}:{Y}</div>
+            <br />
+            <div>Starport Quality: {StarportDescrption()}</div>
+            <br />
+            <div>Size: {WorldSizeDescription()}</div>
+            <br />
+            <div>Atmosphere: {WorldAtmosphereDescrpition()}</div>
+            <br />
+            <div>Hydrographics: {WorldHydrographicsDescription()}</div>
+            <br />
+            <div>Population: {Population}</div>
+            <br />
+            <div>Primary Government: {GovernmentTypeDescrption()}</div>
+            <br />
+            <div>Law Level: {LawLevelDescription()}</div>
+            <br />
+            <div>Tech Level: {TechLevelDescription()}</div>
+            <br />
+            <div>Temperature: {GenerateWorldTemperatureHtml()}</div>
+            <br />
+
+            <div>Trade Codes</div>
+            <div style=""color:orange"">{GetTradeCodes().Replace("\n","<br />")}</div>
+            <br />
+            
+            <div>Bases in system</div>
             {GetBasesInSystemHTML()}
-            <tr><td>Factions</td></tr>
-            <tr><td>Government Type</td><td>Strength</td></tr>
+            <br />
+
+            <div>Factions</div>
+            <div>Government Type: Strength</div>
             {GenerateFactionsHTML()}
-        </tbody>
-    </table></div>";
+            <br />
+        </div>";
             return html;
         }
 
@@ -687,17 +674,17 @@ namespace Traveller_subsector_generator
 
             if (GasGiant)
             {
-                sb.Append(@"<tr style=""color:orangered""><td>Gas Giant</td></tr>");
+                sb.Append(@"<div style=""color:orangered"">Gas Giant</div>");
             }
 
             if (MilitaryBase)
             {
-                sb.Append("<tr style=\"color:#6bDA26\"><td>Military Base</td></tr>");
+                sb.Append("<div style=\"color:#6bDA26\">Military Base</div>");
             }
 
             if (OtherBase)
             {
-                sb.Append("<tr style=\"color:white\"><td>Other Base</td></tr>");
+                sb.Append("<div style=\"color:white\">Other Base</div>");
             }
 
             return sb.ToString();
@@ -706,7 +693,7 @@ namespace Traveller_subsector_generator
         private string GenerateFactionsHTML()
         {
             var sb = new StringBuilder();
-            var rand = new Random();
+            var rand = die;
             var factionCount = GetFactionCount();
 
             for (int i = 0; i < factionCount; i++)
@@ -715,7 +702,7 @@ namespace Traveller_subsector_generator
                 var strengthText = GetFactionStrengthText(strength);
 
                 var government = GovernmentTypeDescrption(rand.Next(2,13));
-                sb.Append($"<tr><td style=\"color:#ffe81F\">{government}</td><td style=\"color:#fa0000\">{strengthText}<td></tr>");
+                sb.Append($"<div style=\"color:#ffe81F\">{government}: {strengthText}</div><br />");
             }
 
             return sb.ToString();
@@ -723,7 +710,7 @@ namespace Traveller_subsector_generator
 
         private int GetFactionCount()
         {
-            var rand = new Random();
+            var rand = die;
             var factionCount = rand.Next(1,4);
             if (GovernmentType == 0 || GovernmentType == 7) factionCount++;
             else if (GovernmentType == 10) factionCount--;
@@ -735,17 +722,17 @@ namespace Traveller_subsector_generator
         {
             return number switch
             {
-                2 => "Obscure group - few have heard of them, no popular support",
-                3 => "Obscure group - few have heard of them, no popular support",
-                4 => "Fringe Group - Few supporters",
-                5 => "Fringe Group - Few supporters",
-                6 => "Minor gorup - Some supporters",
-                7 => "Minor gorup - Some supporters",
-                8 => "Notable group - significant support, well known",
-                9 => "Notable group - significant support, well known",
-                10 => "Significant - nearly as poweful as government",
-                11 => "Significant - nearly as poweful as government",
-                12 => "overwhelming popular support - more powerful than government",
+                2 => "<div style=\"color:blue\">Obscure group - few have heard of them, no popular support</div>",
+                3 => "<div style=\"color:azure\">Obscure group - few have heard of them, no popular support</div>",
+                4 => "<div style=\"color:cyan\">Fringe Group - Few supporters</div>",
+                5 => "<div style=\"color:springgreen\">Fringe Group - Few supporters</div>",
+                6 => "<div style=\"color:green\">Minor group - Some supporters</div>",
+                7 => "<div style=\"color:chartreuse\">Minor group - Some supporters</div>",
+                8 => "<div style=\"color:yellow\">Notable group - significant support, well known</div>",
+                9 => "<div style=\"color:orange\">Notable group - significant support, well known</div>",
+                10 => "<div style=\"color:red\">Significant - nearly as powerful as government</div>",
+                11 => "<div style=\"color:magenta\">Significant - nearly as powerful as government</div>",
+                12 => "<div style=\"color:violet\">overwhelming popular support - more powerful than government</div>",
                 _ => "Error!"
             };
         }
@@ -782,7 +769,7 @@ namespace Traveller_subsector_generator
 
         private string GenerateWorldTemperatureHtml()
         {
-            var rand = new Random();
+            var rand = die;
             var temperature = rand.Next(2, 12);
 
             GetWorldTemperatureModifier(ref temperature);

@@ -77,20 +77,12 @@ Some stats about the {Name} SuperSector:
 
         public void WriteWholeSupersectorHTML(string path)
         {
-            Console.WriteLine();
-            int current = 0;
-            var total = sectors.GetLength(0) * sectors.GetLength(1);
             File.WriteAllText(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
             foreach (var sector in sectors)
             {
                 var megaPath = $"{path}/{sector.Name}".Replace(" ", "_");
                 Directory.CreateDirectory(megaPath);
                 sector.WriteWholeSectorHTML(megaPath);
-
-                current++;
-                var percent = Math.Round((double)current / (double)total * 100, 0);
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write($"\r[{Name}] SuperSector: {percent}% ({current}/{total})");
             }
 
         }

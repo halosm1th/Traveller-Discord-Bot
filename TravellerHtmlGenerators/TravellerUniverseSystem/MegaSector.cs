@@ -92,7 +92,6 @@ namespace Traveller_subsector_generator
 
         public void WriteWholeMegasectorHTML(string path)
         {
-            Console.WriteLine();
             int current = 0;
             int total = supersectors.GetLength(0) * supersectors.GetLength(1);
             File.WriteAllText(path + $"/{Name.Replace(" ", "_")}.html", GetHTML());
@@ -107,7 +106,6 @@ namespace Traveller_subsector_generator
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine($"\r[{Name}] megaSector: {percent}% ({current}/{total})");
             }
-            Console.WriteLine();
         }
 
         public async Task WriteWholeMegasectorHTMLAsync(string path)
