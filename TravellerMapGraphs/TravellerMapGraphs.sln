@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravellerDiscordBot", "..\T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravellerFactionSystem", "..\TravellerFactionSystem\TravellerFactionSystem.csproj", "{0AE4810A-A275-4886-89CF-7619C71D00E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravellerHtmlGenerators", "..\TravellerHtmlGenerators\TravellerHtmlGenerators.csproj", "{5F6DB7EF-9C77-44E3-A8B0-A642A97E73D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravellerHtmlGenerators", "..\TravellerHtmlGenerators\TravellerHtmlGenerators.csproj", "{5F6DB7EF-9C77-44E3-A8B0-A642A97E73D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravellerGalaxyMapDisplay", "..\TravellerGalaxyMapDisplay\TravellerGalaxyMapDisplay.csproj", "{AB75E55F-8C23-4EC6-A522-0BDE7369E74C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{5F6DB7EF-9C77-44E3-A8B0-A642A97E73D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F6DB7EF-9C77-44E3-A8B0-A642A97E73D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F6DB7EF-9C77-44E3-A8B0-A642A97E73D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB75E55F-8C23-4EC6-A522-0BDE7369E74C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB75E55F-8C23-4EC6-A522-0BDE7369E74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB75E55F-8C23-4EC6-A522-0BDE7369E74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB75E55F-8C23-4EC6-A522-0BDE7369E74C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
