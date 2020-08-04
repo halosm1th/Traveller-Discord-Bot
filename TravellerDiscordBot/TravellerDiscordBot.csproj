@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.9.11" />
     <PackageReference Include="Discord.Net" Version="2.2.0" />
   </ItemGroup>
 

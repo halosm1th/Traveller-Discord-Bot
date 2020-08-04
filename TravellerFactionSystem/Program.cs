@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 
 namespace TravellerFactionSystem
 {
@@ -6,7 +7,7 @@ namespace TravellerFactionSystem
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var westernIslands = new BitVector32.Section();
         }
     }
 }

@@ -8,58 +8,17 @@ using System.Threading.Tasks;
 
 namespace TravellerUniverse
 {
-    #region Enums!
-    enum StarportQuality
-    {
-        A,B,C,D,E,X
-    }
-
-    enum WorldSize
-    {
-        Statation,
-        TinyMoon,
-        Moon,
-        TinyWorld,
-        SmallWorld,
-        MediumWorld,
-        MediumLargeWorld,
-        LargeWorld,
-        ReallyLargeWorld,
-        HugeWorld,
-        MassiveWorld
-    }
-    enum WorldAtmosphere
-    {
-        None,
-        Trace,
-        VeryThinTainted,
-        VeryThin,
-        ThinTainted,
-        Thin,
-        Standard,
-        StandardTainted,
-        DenseTainted,
-        Dense,
-        Exotic,
-        Corrosive,
-        Insidious,
-        VersyDense,
-        Low,
-        Unusual
-    }
-    #endregion
-
     class World
     {
         #region Variables
         public bool HasWorld = false;
 
-        public byte X;
-        public byte Y;
+        public int X;
+        public int Y;
         public string Name;
-        public StarportQuality StarportQuality;
-        public WorldSize WorldSize;
-        public WorldAtmosphere WorldAtmosphere;
+        public int StarportQuality;
+        public int WorldSize;
+        public int WorldAtmosphere;
         public int WorldHydrographics;
         public int PopulationStat;
 
@@ -72,12 +31,9 @@ namespace TravellerUniverse
                     var pop = "";
                     try
                     {
-                        pop = string.Intern(PopulationDescription());
+                        pop = String.Intern(PopulationDescription());
                     }
-                    catch
-                    {
-                        // ignored
-                    }
+                    catch{}
 
                     _population = pop;
                 }
@@ -196,8 +152,8 @@ namespace TravellerUniverse
             var loc = location.Split(':');
 
             Name = name;
-            X = Convert.ToByte(loc[0]);
-            Y = Convert.ToByte(loc[1]);
+            X = Convert.ToInt32(loc[0]);
+            Y = Convert.ToInt32(loc[1]);
 
             if (stations[0] == 'Y') GasGiant = true;
             if (stations[1] == 'Y') MilitaryBase = true;
@@ -249,16 +205,16 @@ namespace TravellerUniverse
 
         public World(int x, int y, Subsector subsector)
         {
-            X = (byte)x;
-            Y = (byte)y;
+            X = x;
+            Y = y;
             HasWorld = false;
             _subsector = subsector;
         }
 
         public World(int x, int y, string name, Subsector subsector)
         {
-            X = (byte)x;
-            Y = (byte)y;
+            X = x;
+            Y = y;
             Name = name;
             HasWorld = true;
             _subsector = subsector;
@@ -269,48 +225,50 @@ namespace TravellerUniverse
         public string StarportDescrption()
             => StarportQuality switch
             {
-                StarportQuality.A => "Excellent Starport. 1D x Cr1000 to Berth. | Refined Fuel. | Shipyard(all) Repair Facilities. Check sheet for bases",
-                StarportQuality.B => "Good Starport. 1D x Cr500 to Berth. | Refined Fuel. | Shipyard(Spacecraft) Repair Facilities. Check sheet for bases",
-                StarportQuality.C => "Routine Starport. 1D x Cr100 to Berth. | Unrefined Fuel. | Shipyard(Small Craft) Repair Facilities. Check sheet for bases",
-                StarportQuality.D => "Poor Starport. 1D x Cr10 to Berth. | Unrefined Fuel. | Limited Repair Facilities. Check sheet for bases",
-                StarportQuality.E => "Frontier Starport. 0Cr to Berth. | No Fuel. | No Repair Facilities. No bases.",
+                10 => "Excellent Starport. 1D x Cr1000 to Berth. | Refined Fuel. | Shipyard(all) Repair Facilities. Check sheet for bases",
+                11 => "Good Starport. 1D x Cr500 to Berth. | Refined Fuel. | Shipyard(Spacecraft) Repair Facilities. Check sheet for bases",
+                12 => "Routine Starport. 1D x Cr100 to Berth. | Unrefined Fuel. | Shipyard(Small Craft) Repair Facilities. Check sheet for bases",
+                13 => "Poor Starport. 1D x Cr10 to Berth. | Unrefined Fuel. | Limited Repair Facilities. Check sheet for bases",
+                14 => "Frontier Starport. 0Cr to Berth. | No Fuel. | No Repair Facilities. No bases.",
                 _ => "No Starport. No berthing Cost. | No facilities. | No bases",
             };
+
         public string WorldSizeDescription()
             => WorldSize switch
             {
-                WorldSize.Statation => "Size of Less then 1000KM. | Examples Asteroid, Orbital Complex. | Negligible Gravity",
-                WorldSize.TinyMoon => "Size of Roughly 1,600KM. | Example Triton. | 0.05 Gravity",
-                WorldSize.Moon => "Size of Roughly 3,200KM. | Examples Luna, Europa. | 0.15 Gravity",
-                WorldSize.TinyWorld => "Size of Roughly 4,800KM. | Examples Mercury, Ganymede. | 0.25 Gravity",
-                WorldSize.SmallWorld => "Size of Roughly 6,400KM. | No listed example. | 0.35 Gravity",
-                WorldSize.MediumWorld => "Size of Roughly 8,000KM. | Example Mars. | 0.45 Gravity",
-                WorldSize.MediumLargeWorld => "Size of Roughly 9,600KM. | No Listed examples. | 0.7 Gravity",
-                WorldSize.LargeWorld => "Size of Roughly 11,200KM. | Example Earth. 0.9 | Gravity",
-                WorldSize.ReallyLargeWorld => "Size of Roughly 12,800KM. | No Listed examples. | 1.0 Gravity",
-                WorldSize.HugeWorld => "Size of Roughly 14,400KM. | No Listed examples. | 1.25 Gravity",
-                WorldSize.MassiveWorld => "Size of Roughly 16,000KM. | No Listed examples. | 1.4 Gravity",
+                0 => "Size of Less then 1000KM. | Examples Asteroid, Orbital Complex. | Negligible Gravity",
+                1 => "Size of Roughly 1,600KM. | Example Triton. | 0.05 Gravity",
+                2 => "Size of Roughly 3,200KM. | Examples Luna, Europa. | 0.15 Gravity",
+                3 => "Size of Roughly 4,800KM. | Examples Mercury, Ganymede. | 0.25 Gravity",
+                4 => "Size of Roughly 6,400KM. | No listed example. | 0.35 Gravity",
+                5 => "Size of Roughly 8,000KM. | Example Mars. | 0.45 Gravity",
+                6 => "Size of Roughly 9,600KM. | No Listed examples. | 0.7 Gravity",
+                7 => "Size of Roughly 11,200KM. | Example Earth. 0.9 | Gravity",
+                8 => "Size of Roughly 12,800KM. | No Listed examples. | 1.0 Gravity",
+                9 => "Size of Roughly 14,400KM. | No Listed examples. | 1.25 Gravity",
+                10 => "Size of Roughly 16,000KM. | No Listed examples. | 1.4 Gravity",
                 _ => "Error"
                 };
+
         public string WorldAtmosphereDescrpition()
             => WorldAtmosphere switch
             {
-                WorldAtmosphere.None => "Compostion: None. | Example Moon. | Pressure 0.00. | Survival Gear Required Vacc Suit.",
-                WorldAtmosphere.Trace => "Compostion: Trace. | Example Mars. | Pressure 0.01 to 0.09. | Survival Gear Required Vacc Suit.",
-                WorldAtmosphere.VeryThin => "Compostion: Very Thin, Tainted. | Example None. | Pressure 0.1 to 0.42. | Survival Gear Required Respirator, Filter/",
-                WorldAtmosphere.VeryThinTainted => "Compostion: Very Thin. | Example None. | Pressure 0.1 to 0.42. | Survival Gear Required Respirator.",
-                WorldAtmosphere.ThinTainted => "Compostion: Thin, Tainted. | Example None. | Pressure 0.43 to 0.7. | Survival Gear Required Filter.",
-                WorldAtmosphere.Thin => "Compostion: Thin. | Example None. | Pressure 0.43 to 0.7. | Survival Gear Required None.",
-                WorldAtmosphere.Standard => "Compostion: Standard. | Example Earth. | Pressure 0.71-1.49. | Survival Gear Required None.",
-                WorldAtmosphere.StandardTainted => "Compostion: Standard, Tainted. | Example None. | Pressure 0.71-1.49. | Survival Gear Required Filter.",
-                WorldAtmosphere.Dense => "Compostion: Dense. | Example None. | Pressure 1.5-2.49. | Survival Gear Required None.",
-                WorldAtmosphere.DenseTainted => "Compostion: Dense, Tainted.  | Example None. | Pressure 1.5-2.49. | Survival Gear Required Filter.",
-                WorldAtmosphere.Exotic => "Compostion: Exotic. | Example None. | Pressure Varies. | Survival Gear Required Air Supply..",
-                WorldAtmosphere.Corrosive => "Compostion: Corrosive. | Example Venus. Pressure Varies. | Survival Gear Required Vacc Suit.",
-                WorldAtmosphere.Insidious => "Compostion: Insidious. | Example None. Pressure Varies. | Survival Gear Required Vacc Suit.",
-                WorldAtmosphere.VersyDense => "Compostion: Very Dense. | Example None. | Pressure 2.5+. | Survival Gear Required None",
-                WorldAtmosphere.Low => "Compostion: Low. | Example None. | Pressure 0.5 or less. | Survival Gear Required None.",
-                WorldAtmosphere.Unusual => "Compostion: Unusual. | Example None. | Pressure Varies. | Survival Gear Required Varies",
+                0 => "Compostion: None. | Example Moon. | Pressure 0.00. | Survival Gear Required Vacc Suit.",
+                1 => "Compostion: Trace. | Example Mars. | Pressure 0.01 to 0.09. | Survival Gear Required Vacc Suit.",
+                2 => "Compostion: Very Thin, Tainted. | Example None. | Pressure 0.1 to 0.42. | Survival Gear Required Respirator, Filter/",
+                3 => "Compostion: Very Thin. | Example None. | Pressure 0.1 to 0.42. | Survival Gear Required Respirator.",
+                4 => "Compostion: Thin, Tainted. | Example None. | Pressure 0.43 to 0.7. | Survival Gear Required Filter.",
+                5 => "Compostion: Thin. | Example None. | Pressure 0.43 to 0.7. | Survival Gear Required None.",
+                6 => "Compostion: Standard. | Example Earth. | Pressure 0.71-1.49. | Survival Gear Required None.",
+                7 => "Compostion: Standard, Tainted. | Example None. | Pressure 0.71-1.49. | Survival Gear Required Filter.",
+                8 => "Compostion: Dense, Tainted. | Example None. | Pressure 1.5-2.49. | Survival Gear Required None.",
+                9 => "Compostion: Dense, Tainted. | Example None. | Pressure 1.5-2.49. | Survival Gear Required Filter.",
+                10 => "Compostion: Exotic. | Example None. | Pressure Varies. | Survival Gear Required Air Supply..",
+                11 => "Compostion: Corrosive. | Example Venus. Pressure Varies. | Survival Gear Required Vacc Suit.",
+                12 => "Compostion: Insidious. | Example None. Pressure Varies. | Survival Gear Required Vacc Suit.",
+                13 => "Compostion: Very Dense. | Example None. | Pressure 2.5+. | Survival Gear Required None",
+                14 => "Compostion: Low. | Example None. | Pressure 0.5 or less. | Survival Gear Required None.",
+                15 => "Compostion: Unusual. | Example None. | Pressure Varies. | Survival Gear Required Varies",
                 _ => "Error"
             };
 
